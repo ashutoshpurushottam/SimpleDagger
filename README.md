@@ -1,4 +1,3 @@
 # Simple Dagger
 ----
-This is a simple Single screen Android application. The app has been developed to introduce the concept of dependency injection in Android applications. As this is just an introduction, this application has only one Component.
-
+This is a simple Android application written to demonstrate dependency injection in Android. The application has been written for teaching purpose. Its a very simple application with only one component and one subcomponent.
