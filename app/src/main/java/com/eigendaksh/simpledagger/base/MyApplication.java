@@ -3,6 +3,7 @@ package com.eigendaksh.simpledagger.base;
 import android.app.Application;
 
 import com.eigendaksh.simpledagger.di.DaggerMemberAppComponent;
+import com.eigendaksh.simpledagger.di.DateAndTimeModule;
 import com.eigendaksh.simpledagger.di.MemberAppComponent;
 import com.eigendaksh.simpledagger.di.MemberDataModule;
 
@@ -23,8 +24,10 @@ public class MyApplication extends Application {
         myApplication = this;
 
         memberAppComponent = DaggerMemberAppComponent.builder()
-                .memberDataModule(new MemberDataModule())
+                .memberDataModule(new MemberDataModule(getApplicationContext()))
+                .dateAndTimeModule(new DateAndTimeModule())
                 .build();
+
     }
 
     public static MyApplication getApp() {
@@ -34,4 +37,5 @@ public class MyApplication extends Application {
     public MemberAppComponent getMemberAppComponent() {
         return memberAppComponent;
     }
+
 }

@@ -1,20 +1,21 @@
 package com.eigendaksh.simpledagger.home;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eigendaksh.simpledagger.base.MyApplication;
 import com.eigendaksh.simpledagger.data.MemberDataManager;
 import com.eigendaksh.simpledagger.R;
-import com.eigendaksh.simpledagger.di.MemberAppComponent;
+import com.eigendaksh.simpledagger.welcome.WelcomeActivity;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +23,11 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Inject MemberDataManager memberDataManager;
+    @Inject @Named("local") MemberDataManager memberDataManager;
+    @Inject @Named("dd-MMM-yy") String currentDate;
+
     @BindView(R.id.etMemberId) EditText memberId;
+    @BindView(R.id.tvCount) TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         if(supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        tvResult.setText(currentDate);
     }
 
     @OnClick(R.id.btnSubmit)
@@ -47,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             String input = memberId.getText().toString();
             String result = memberDataManager.checkMemberStatus(input);
-            showToast(result);
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.putExtra("result", result);
+            startActivity(intent);
         }
     }
 

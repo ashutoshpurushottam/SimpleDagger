@@ -1,5 +1,7 @@
 package com.eigendaksh.simpledagger.data;
 
+import android.content.SharedPreferences;
+
 import com.eigendaksh.simpledagger.data.Member;
 
 import java.util.ArrayList;
@@ -11,11 +13,21 @@ import java.util.ArrayList;
 
 public class MemberDataManager {
 
+    private static final String COUNT_KEY = "count_key";
+
     private String memberStatus;
     private ArrayList<Member> members = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
+    private int currentCount;
 
-    public MemberDataManager() {
 
+    public MemberDataManager(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+        populateData();
+    }
+
+    public MemberDataManager(SharedPreferences sharedPreferences, NetworkManager networkManager) {
+        this.sharedPreferences = sharedPreferences;
         populateData();
     }
 
@@ -26,10 +38,18 @@ public class MemberDataManager {
 
         for (Member m : members) {
             if ((m.getMemberId().equals(userInput))) {
-                memberStatus = "Access Granted";
+                updateAccessCount();
+                memberStatus = "Access Granted and Access Count is: " + getCurrentCount();
             }
         }
         return memberStatus;
+    }
+
+
+    private void updateAccessCount() {
+        currentCount = sharedPreferences.getInt(COUNT_KEY, 0) + 1;
+        sharedPreferences.edit().putInt(COUNT_KEY, currentCount).apply();
+
     }
 
 
@@ -42,4 +62,7 @@ public class MemberDataManager {
         members.add(new Member("601", "Rinku", "rinku@gmail.com"));
     }
 
+    public int getCurrentCount() {
+        return currentCount;
+    }
 }

@@ -1,6 +1,9 @@
 package com.eigendaksh.simpledagger.di;
 
 import com.eigendaksh.simpledagger.home.MainActivity;
+import com.eigendaksh.simpledagger.welcome.MessageModule;
+import com.eigendaksh.simpledagger.welcome.WelcomeActivity;
+import com.eigendaksh.simpledagger.welcome.WelcomeActivityComponent;
 
 import javax.inject.Singleton;
 
@@ -12,7 +15,11 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = MemberDataModule.class)
+@Component(modules = {
+        MemberDataModule.class,
+        DateAndTimeModule.class,
+})
 public interface MemberAppComponent {
     void inject(MainActivity mainActivity);
+    WelcomeActivityComponent newWelcomeActivityComponent(MessageModule messageModule);
 }
