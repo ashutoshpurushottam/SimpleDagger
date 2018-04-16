@@ -16,42 +16,39 @@ import com.eigendaksh.simpledagger.di.MemberAppComponent;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
     @Inject MemberDataManager memberDataManager;
-
-    private EditText memberId;
-    private Button submitButton;
-
+    @BindView(R.id.etMemberId) EditText memberId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Inject Dependency
         MyApplication.getApp().getMemberAppComponent().inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
 
         ActionBar supportActionBar = getSupportActionBar();
         if(supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
 
-        memberId = findViewById(R.id.etMemberId);
-        submitButton = findViewById(R.id.btnSubmit);
-
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((memberId.getText().toString().equals(""))) {
-                    showToast("Member Id is empty");
-                } else {
-                    String input = memberId.getText().toString();
-                    String result = memberDataManager.checkMemberStatus(input);
-                    showToast(result);
-                }
-            }
-        });
+    @OnClick(R.id.btnSubmit)
+    public void onClick() {
+        if ((memberId.getText().toString().equals(""))) {
+            showToast("Member Id is empty");
+        } else {
+            String input = memberId.getText().toString();
+            String result = memberDataManager.checkMemberStatus(input);
+            showToast(result);
+        }
     }
 
     @Override
